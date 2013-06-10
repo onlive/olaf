@@ -23,7 +23,7 @@ module OLFramework
 
     ### Sinatra settings
     set :root, Dir.pwd
-    set :frame_root, Proc.new { ENV['FRAMEWORK_ROOT'] || File.join(settings.root, "..", "ol_framework") }
+    set :frame_root, Proc.new { ENV['FRAMEWORK_ROOT'] || File.join(settings.root, "..", "olaf") }
 
     ### Conditions for Routes
     set :on_port, proc { |value| condition { request.port == value } }

@@ -5,7 +5,7 @@ rescue LoadError
 end
 
 Gem::Specification.new do |s|
-  s.name = "ol_framework"
+  s.name = "olaf"
   s.version = OL_GEM_VERSION
   s.summary = "OnLive Ruby REST framework"
   s.authors = ["onplatform@onlive.com"]
