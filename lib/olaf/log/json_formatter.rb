@@ -11,15 +11,13 @@ module Olaf
       @pid = options[:pid] || true
       @thread = options[:thread] || true
       @datetime_format = options[:time_format] || nil
-      puts "Config <#{@pid}> <#{@thread}>"
     end
 
     def format(event)
       h = {
           :time => format_datetime(Time.now),
           :level => Log4r::LNAMES[event.level],
-          :logger => event.fullname,
-          :NDC => Log4r::NDC.get
+          :logger => event.fullname
         }.merge( Log4r::MDC.get_context )
          .merge( format_data(event.data) )
          .merge( optional_data )
@@ -30,6 +28,8 @@ module Olaf
       ret = {}
       ret[:pid] = Process.pid.to_s if @pid
       ret[:thread] = (Thread.current[:name] or Thread.current.to_s) if @thread
+      ndc = Log4r::NDC.get
+      ret[:NDC] = ndc if ndc.length > 0
       ret
     end
 
@@ -52,5 +52,6 @@ module Olaf
       else
         time.strftime(@datetime_format)
       end
-    end  end
+    end
+  end
 end
