@@ -1,24 +1,29 @@
 # Copyright (C) 2013 OL2, Inc. All Rights Reserved.
 
 require 'log4r'
+require 'json'
 
-module OLFramework
+module Olaf
   # JSON formatter for log4r
-  class JsonFormatter
+  class JsonFormatter < Log4r::Formatter
 
     def initialize(options={})
-      @pid = hash[:pid] or hash['pid'] or false
-      @thread = hash[:thread] or hash['thread'] or false
+      @pid = options[:pid] || true
+      @thread = options[:thread] || true
+      @datetime_format = options[:time_format] || nil
+      puts "Config <#{@pid}> <#{@thread}>"
     end
 
     def format(event)
-      return
-        { :level => LNAMES[event.level],
-          :logger => event.full_name,
-          :NDC => NDC.get
-        }.merge( MDC.get_context )
+      h = {
+          :time => format_datetime(Time.now),
+          :level => Log4r::LNAMES[event.level],
+          :logger => event.fullname,
+          :NDC => Log4r::NDC.get
+        }.merge( Log4r::MDC.get_context )
          .merge( format_data(event.data) )
          .merge( optional_data )
+      h.to_json + "\n"
     end
 
     def optional_data
@@ -41,5 +46,11 @@ module OLFramework
       return { :message => "#{data.class}: #{data.inspect}" }
     end
 
-  end
+    def format_datetime(time)
+      if @datetime_format.nil?
+        time.strftime("%Y-%m-%dT%H:%M:%S.") << "%06d " % time.usec
+      else
+        time.strftime(@datetime_format)
+      end
+    end  end
 end
