@@ -17,6 +17,12 @@ module OLFramework
         STDERR.puts $!.backtrace.join("\n")
       end
     end
+
+    # Several modules inside Olaf are having trouble with the whole
+    # ::Thread thing to scope to global.  Let's patch that.
+    def self.current
+      ::Thread.current
+    end
   end
 
   @@resources ||= Hash.new { |h, k| h[k] = Hash.new }

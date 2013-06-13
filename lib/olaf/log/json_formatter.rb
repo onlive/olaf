@@ -27,7 +27,7 @@ module Olaf
     def optional_data
       ret = {}
       ret[:pid] = Process.pid.to_s if @pid
-      ret[:thread] = (Thread.current[:name] or Thread.current.to_s) if @thread
+      ret[:thread] = (::Thread.current[:name] or ::Thread.current.to_s) if @thread
       ndc = Log4r::NDC.get
       ret[:NDC] = ndc if ndc.length > 0
       ret
