@@ -3,22 +3,30 @@
 require 'active_support/core_ext/string/inflections'
 
 class Hash
-  #take keys of hash and transform those to a symbols
-  def self.convert_keys_to_symbols(val)
+  def self.map_keys(val, &block)
     return val unless val.is_a?(Hash)
     val.inject({}) do |memo,(k,v)|
-      if k.respond_to?(:to_sym)
-        memo[k.to_sym] = Hash.convert_keys_to_symbols(v)
-        memo
-      else
-        memo[k] = Hash.convert_keys_to_symbols(v)
-        memo
-      end
+      memo[block.call(k)] = Hash.map_keys(v, &block)
+      memo
     end
+  end
+
+  # take keys of hash and transform those to symbols
+  def self.convert_keys_to_symbols(val)
+    map_keys(val) { |k| k.respond_to?(:to_sym) ? k.to_sym : k }
+  end
+
+  # take keys of hash and transform those to strings
+  def self.convert_keys_to_strings(val)
+    map_keys(val) { |k| k.respond_to?(:to_s) ? k.to_s : k }
   end
 
   def convert_keys_to_symbols
     Hash.convert_keys_to_symbols(self)
+  end
+
+  def convert_keys_to_strings
+    Hash.convert_keys_to_strings(self)
   end
 
   #

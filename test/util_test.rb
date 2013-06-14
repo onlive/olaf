@@ -11,4 +11,9 @@ class TestHashExtensions < MiniTest::Unit::TestCase
     assert_equal({ :a => 1 }, { :a => 1, :b => 2 }.slice([:a, :c]))
     assert_equal({ :a => 1, :b => 2 }, { :a => 1, :b => 2 }.slice([:a, :b]))
   end
+
+  def test_convert_keys
+    assert_equal({:a => 1, :b => 2}, {"a" => 1, :b =>2}.convert_keys_to_symbols)
+    assert_equal({"a" => 1, "b" => 2}, {"a" => 1, :b =>2}.convert_keys_to_strings)
+  end
 end
