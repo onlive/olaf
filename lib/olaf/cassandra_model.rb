@@ -8,11 +8,19 @@ module OLFramework
   Consistency = ::CassandraThrift::ConsistencyLevel
 
   module Cassandra
-    # TODO: add client_setup method to specify non-default client setup
+    def self.client_setup(keyspace = 'Keyspace', servers = '127.0.0.1:9160',
+                          thrift_options = {})
+      STDERR.puts "Client is already set up!" if @client
+      @client ||= ::Cassandra.new(keyspace, servers, thrift_options)
+    end
 
-    def self.cassandra_client
-      @client ||= ::Cassandra.new('Keyspace', '127.0.0.1:9160')
+    def self.client
+      raise "No client configuration!" unless @client
       @client
+    end
+
+    def self.client?
+      !!@client
     end
   end
 
@@ -78,14 +86,13 @@ module OLFramework
             :consistency => consistency
         end.inject({}, &:merge)
 
-        STDERR.puts "New #{self}!"
         self.new uuid, values
       end
 
       private
 
       def cassandra_client
-        Olaf::Cassandra.cassandra_client
+        Olaf::Cassandra.client
       end
 
     end
@@ -98,8 +105,6 @@ module OLFramework
 
         # TODO: check which values correspond to properties
         @values = values.convert_keys_to_strings
-
-        STDERR.puts "Saved values in init: #{@values}"
       end
 
       def uuid
@@ -108,8 +113,6 @@ module OLFramework
 
       def save
         self.class.sanity_check
-
-        STDERR.puts "Values on save: #{@values.inspect}"
 
         # Sort by write consistency
         wcs = {}
@@ -131,7 +134,7 @@ module OLFramework
       private
 
       def cassandra_client
-        Olaf::Cassandra.cassandra_client
+        Olaf::Cassandra.client
       end
 
       public

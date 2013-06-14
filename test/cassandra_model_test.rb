@@ -24,9 +24,12 @@ class TestCassandraModels < MiniTest::Unit::TestCase
   def setup
     # This should only actually be mocked the first time
     client = Object.new
-    stub(::Cassandra).new('Keyspace', '127.0.0.1:9160') { client }
+    stub(::Cassandra).new('Keyspace', '127.0.0.1:9160', {}) { client }
 
-    @client = Olaf::Cassandra.cassandra_client
+    unless Olaf::Cassandra.client?
+      Olaf::Cassandra.client_setup
+    end
+    @client = Olaf::Cassandra.client
   end
 
   def test_find
