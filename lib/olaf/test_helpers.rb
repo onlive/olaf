@@ -65,10 +65,6 @@ end
 # ????????????
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "..", "lib")))
 
-require "rr"
 require "minitest/unit"
 require "minitest/pride"
-
-class MiniTest::Unit::TestCase
-  include RR::Adapters::MiniTest
-end
+require "rr"
