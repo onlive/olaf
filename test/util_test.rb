@@ -1,7 +1,9 @@
+# Copyright (C) 2013 OL2, inc.  All Rights Reserved.
+
 require 'minitest/autorun'
 require 'olaf/extensions/hash'
 
-class TestServiceClient < MiniTest::Unit::TestCase
+class TestHashExtensions < MiniTest::Unit::TestCase
   def test_slice
     assert_equal({}, { :a => 1, :b => 2 }.slice(:c))
     assert_equal({ :a => 1 }, { :a => 1, :b => 2 }.slice(:a))
