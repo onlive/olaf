@@ -46,7 +46,7 @@ class TestCassandraModels < MiniTest::Unit::TestCase
     }
     mock(@client).get('CassTestModel', TEST_UUID, ['other_a', 'other_b'],
                       :consistency => Olaf::Consistency::TWO) {
-      { 'foo' => 'bar' }
+      { }
     }
 
     tm = CassTestModel.find(TEST_UUID)
@@ -93,6 +93,31 @@ class TestCassandraModels < MiniTest::Unit::TestCase
     # Now update
     tm.foo = 'baz'
     tm.woo = 'ha'
+    tm.save
+  end
+
+  def test_update_multi_consistency
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'foo' => 'bar', 'baz' => 'quux' },
+                         :consistency => Olaf::Consistency::QUORUM)
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'other_a' => 'foobaz' },
+                         :consistency => Olaf::Consistency::ONE)
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'foo' => 'baz', 'baz' => 'quux', 'woo' => 'ha' },
+                         :consistency => Olaf::Consistency::QUORUM)
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'other_a' => 'foobaz', 'other_b' => 'yup' },
+                         :consistency => Olaf::Consistency::ONE)
+
+    # First insert
+    tm = CassTestModel.create(:uuid => TEST_UUID, 'foo' => 'bar',
+                              :baz => 'quux', :other_a => 'foobaz')
+
+    # Now update
+    tm.foo = 'baz'
+    tm.woo = 'ha'
+    tm.other_b = 'yup'
     tm.save
   end
 end
