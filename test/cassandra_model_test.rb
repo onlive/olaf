@@ -17,6 +17,13 @@ class CassTestModel
   property :woo, String, :consistency => {
     :read => Olaf::Consistency::ONE, :write => Olaf::Consistency::QUORUM }
 
+  # Properties with different consistency -- ensure they're read and
+  # written separately.
+  property :other_a, String, :consistency => {
+    :read => Olaf::Consistency::TWO, :write => Olaf::Consistency::ONE }
+  property :other_b, String, :consistency => {
+    :read => Olaf::Consistency::TWO, :write => Olaf::Consistency::ONE }
+
   self.column_family = 'CassTestModel'
 end
 
@@ -33,8 +40,12 @@ class TestCassandraModels < MiniTest::Unit::TestCase
   end
 
   def test_find
-    mock(@client).get('CassTestModel', TEST_UUID, ['foo'],
+    mock(@client).get('CassTestModel', TEST_UUID, ['foo', 'baz', 'woo'],
                       :consistency => Olaf::Consistency::ONE) {
+      { 'foo' => 'bar' }
+    }
+    mock(@client).get('CassTestModel', TEST_UUID, ['other_a', 'other_b'],
+                      :consistency => Olaf::Consistency::TWO) {
       { 'foo' => 'bar' }
     }
 
@@ -49,6 +60,22 @@ class TestCassandraModels < MiniTest::Unit::TestCase
 
     tm = CassTestModel.create(:uuid => TEST_UUID, :foo => 'bar')
     assert_equal 'bar', tm.foo
+    assert_equal TEST_UUID, tm.uuid
+  end
+
+  def test_create_multi_consistency
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'foo' => 'bar' },
+                         :consistency => Olaf::Consistency::QUORUM)
+    mock(@client).insert('CassTestModel', TEST_UUID,
+                         { 'other_a' => 'baz' },
+                         :consistency => Olaf::Consistency::ONE)
+
+    tm = CassTestModel.create(:uuid => TEST_UUID,
+                              :foo => 'bar', :other_a => 'baz')
+    assert_equal 'bar', tm.foo
+    assert_equal 'baz', tm.other_a
+    assert_equal nil, tm.woo  # Check uninitialized field
     assert_equal TEST_UUID, tm.uuid
   end
 

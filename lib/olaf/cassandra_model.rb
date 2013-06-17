@@ -47,6 +47,7 @@ module OLFramework
       # :required and :default.
       #
       def property(name, type = ::String, options = {})
+        # If unspecified, default to QUORUM/QUORUM
         options[:consistency] ||= {
           :write => Consistency::QUORUM,
           :read => Consistency::QUORUM
@@ -125,7 +126,9 @@ module OLFramework
 
         # Insert at each consistency
         wcs.map do |consistency, column_names|
+          # TODO: right now, we ignore unset values.  Delete them?
           col_hash = @values.slice(column_names.map(&:to_s))
+          next if col_hash.empty?
           cassandra_client.insert self.class.column_family, uuid, col_hash,
             :consistency => consistency
         end
