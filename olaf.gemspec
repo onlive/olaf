@@ -62,4 +62,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "redcarpet", "<2.0"  # Is 2.0 YARD-compatible yet?
   s.add_development_dependency "ruby_git_hooks"
   s.add_development_dependency "trollop"
+  s.add_development_dependency "nodule"
 end
