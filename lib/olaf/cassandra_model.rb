@@ -10,6 +10,12 @@ module OLFramework
   module Cassandra
     def self.client_setup(keyspace = 'Keyspace', servers = '127.0.0.1:9160',
                           thrift_options = {})
+      if keyspace.is_a?(::Cassandra)
+        # They just passed in a client object directly
+        @client = keyspace
+        return
+      end
+
       STDERR.puts "Client is already set up!" if @client
       @client ||= ::Cassandra.new(keyspace, servers, thrift_options)
     end
