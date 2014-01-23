@@ -1,3 +1,4 @@
+# Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 require 'logger'
 
 module OLFramework

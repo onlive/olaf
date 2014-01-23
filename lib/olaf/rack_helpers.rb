@@ -1,4 +1,4 @@
-# Copyright (C) 2013 OL2, Inc.  All Rights Reserved.
+# Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 # Utility functions designed to be called from config.ru
 
 require "olaf"
