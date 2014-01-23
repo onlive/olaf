@@ -46,9 +46,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "fast_open_struct"
   s.add_runtime_dependency "log4r"
 
-  # Mach DB
-  s.add_runtime_dependency "ol_machdb_api", "~> 0.4.1.pre"
-
   # Development-only
   s.add_development_dependency "rake"
   s.add_development_dependency "rr"  , ">1.0.5"

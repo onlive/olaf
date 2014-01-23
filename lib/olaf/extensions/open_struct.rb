@@ -11,6 +11,5 @@ class OpenStruct
     ret
   end
 
-  # The MachdbApiResponse object has a to_hash method
   alias :to_hash :to_h_recursive
 end
