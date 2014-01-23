@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 
-require 'ci/reporter/rake/minitest'
+#require 'ci/reporter/rake/minitest'
 require 'rake/testtask'
 
 OL_TEST_HELPER = File.join(File.dirname(__FILE__), "..", "test_helpers")
