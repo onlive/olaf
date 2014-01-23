@@ -1,4 +1,3 @@
-source "http://gems.onlive.com"
 source "http://rubygems.org"
 
 gemspec
