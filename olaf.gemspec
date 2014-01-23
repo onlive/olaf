@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name = "olaf"
   s.version = OL_GEM_VERSION
   s.summary = "OnLive Ruby REST framework"
-  s.authors = ["onplatform@onlive.com"]
+  s.authors = ["noah.gibbs@onlive.com", "alex.snyatkov@onlive.com", "peter.lai@onlive.com", "shasha.chu@onlive.com"]
   s.email         = ["onplatform@onlive.com"]
   s.description   = s.summary
   s.homepage      = ""
