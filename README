@@ -1,1 +1,11 @@
-Framework for OnLive Ruby REST web services.
+Olaf, a Sinatra-based Ruby RESTful Framework
+
+We built Olaf for a project that didn't get off the ground, here at OnLive.
+That happens.  But the framework shows a few neat properties, so we thought
+we'd open-source it:
+
+* We build nontrivially on Sinatra.  It takes a little patching, but
+  it's very doable.
+* We allow transparently converting between a multiprocess SOA and
+  a development-friendly single-process architecture.  This makes it
+  easy to develop monolithically, but test and deploy as SOA.
