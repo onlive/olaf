@@ -2,22 +2,10 @@
   "default_adminport": 44004,
 
   "services": {
-    "OL_URI_CORE_SEGMENT": { "service": "ol_segment", "path": "./ol_segment", "port": 3301 },
-    "OL_URI_CORE_STORAGE": { "service": "ol_storage", "path": "./ol_storage", "port": 3301 },
-
-    "OL_URI_BASE_IDENTITY": { "service": "ol_identity", "path": "./ol_identity", "port": 3302 },
-    "OL_URI_BASE_APP": { "service": "ol_application", "path": "./ol_application", "port": 3302 },
-    "OL_URI_BASE_JOB": { "service": "ol_job", "path": "./ol_job", "port": 3302 },
-    "OL_URI_BASE_DATA": { "service": "ol_data", "path": "./ol_data", "port": 3302 },
-    "OL_URI_BASE_JOB_SCHEDULER": { "service": "ol_job_scheduler", "path": "./ol_job_scheduler", "port": 3302 },
-    "OL_URI_BASE_EDGE_QUEUE": { "service": "ol_identity", "path": "./ol_edge_queue", "port": 3302 },
-
-    "OL_URI_BASE_TENANT": { "service": "ol_identity", "path": "./tenant", "port": 4000 }
+    "OL_USER": { "service": "ol_user", "path": "./ol_user", "port": 3301 }
   },
 
   "processes": {
-    "OL_MIDGARD": { "service": "midgard", "path": "./midgard", "port": 3301 },
-    "OL_BIFROST": { "service": "bifrost", "path": "./bifrost", "port": 3302 },
-    "OL_TENANT": { "service": "tenant", "path": "./tenant", "port": 4000 }
+    "OL_USER": { "service": "user", "path": "./user", "port": 4000 }
   }
 }
