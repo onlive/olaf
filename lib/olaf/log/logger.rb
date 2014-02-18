@@ -2,7 +2,7 @@
 
 require 'log4r'
 
-module OLFramework
+module Olaf
 
   # Rack::Logger replacement which uses our logger
   class Logger < Log4r::Logger

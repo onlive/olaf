@@ -2,7 +2,7 @@
 
 require 'logger'
 
-module OLFramework
+module Olaf
 
   # Include this helper to get class instance logger.
   module LoggerHelpers

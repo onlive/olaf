@@ -4,7 +4,7 @@ require "json"
 
 require "olaf/errors"
 
-module OLFramework
+module Olaf
   class Settings
     def initialize(options = {})
       @fields = {}

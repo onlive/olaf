@@ -11,7 +11,7 @@ class TestFrameworkError < MiniTest::Unit::TestCase
         :request_guid => "7d6b0dd4-a83f-11e2-a237-000a27020050",
     }
 
-    hash =  OLFramework::Error.new(e).to_ol_hash
+    hash =  Olaf::Error.new(e).to_ol_hash
 
     assert !hash.has_key?(:http_response_code), "Must not have http response in the hash"
     assert hash[:error_code], e[:error_code]
@@ -21,7 +21,7 @@ class TestFrameworkError < MiniTest::Unit::TestCase
     assert hash.has_key?(:backtrace)
   end
 
-  TestError = OLFramework::define_error(1000, 400)
+  TestError = Olaf::define_error(1000, 400)
 
   def test_error_definition
     e = TestError.new(:request_guid => "7d6b0dd4-a83f-11e2-a237-000a27020050")

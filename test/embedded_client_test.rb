@@ -4,7 +4,7 @@ require 'rack/test'
 require 'olaf'
 require 'olaf/service'
 
-class FirstEmbeddedService < OLFramework::Service
+class FirstEmbeddedService < Olaf::Service
   service_name "FirstEmbeddedService"
 
   route_name :hello_embedded
@@ -25,12 +25,12 @@ class FirstEmbeddedService < OLFramework::Service
   route_name :throw_an_error
   get "/throw-me-an-error" do
     puts "Throwing OLArgumentError"
-    raise ::OLFramework::OLArgumentError
+    raise ::Olaf::OLArgumentError
   end
 
 end
 
-class SecondEmbeddedService < OLFramework::Service
+class SecondEmbeddedService < Olaf::Service
   service_name "SecondEmbeddedService"
 
   route_name :call_through
@@ -52,9 +52,9 @@ class SecondEmbeddedService < OLFramework::Service
 end
 
 # No URL - they're embedded in the same process.
-OLFramework::add_resource(:name => "FirstEmbeddedService",
+Olaf::add_resource(:name => "FirstEmbeddedService",
                           :service => FirstEmbeddedService)
-OLFramework::add_resource(:name => "SecondEmbeddedService",
+Olaf::add_resource(:name => "SecondEmbeddedService",
                           :service => SecondEmbeddedService)
 
 class TestEmbeddedServiceClient < MiniTest::Unit::TestCase
@@ -81,7 +81,7 @@ class TestEmbeddedServiceClient < MiniTest::Unit::TestCase
 
   def test_client_rethrows
     # RestClient allows specifying "params" in the headers, but we don't.
-    e = assert_raises ::OLFramework::Error do
+    e = assert_raises ::Olaf::Error do
       FirstEmbeddedService.client.throw_an_error!( {} )
     end
 

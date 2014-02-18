@@ -33,7 +33,7 @@ require 'dm-core'
 require 'dm-migrations'
 require 'mysql2'
 
-module OLFramework
+module Olaf
   module TestHelpers
 
     def self.included(base)

@@ -6,13 +6,13 @@ require 'olaf/service'
 # various kinds.
 
 class TestParamTypes < MiniTest::Unit::TestCase
-  include OLFramework::ServiceHelpers
-  include OLFramework::TestHelpers
+  include Olaf::ServiceHelpers
+  include Olaf::TestHelpers
 
-  Required = OLFramework::Required
+  Required = Olaf::Required
 
   def test_simple_params
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value Fixnum, "bob"
     end
 
@@ -22,12 +22,12 @@ class TestParamTypes < MiniTest::Unit::TestCase
 
   def test_array_params
     # Scalar type and array value should raise
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value Fixnum, [7]
     end
 
     # Array type and scalar value should raise
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value [ Fixnum ], 7
     end
 
@@ -36,10 +36,10 @@ class TestParamTypes < MiniTest::Unit::TestCase
   end
 
   def test_hash_params
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value Hash, 7
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value({}, 7)
     end
 
@@ -50,10 +50,10 @@ class TestParamTypes < MiniTest::Unit::TestCase
   end
 
   def test_required_params
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(Required, nil)
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(Required[String], nil)
     end
     assert_equal "bob", check_type_against_value(Required[String], "bob")
@@ -70,10 +70,10 @@ class TestParamTypes < MiniTest::Unit::TestCase
   end
 
   def test_hash_against_class_param
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, {"parting_is_such_sweet_sorrow"=>true})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, {""=>""})
     end
 
@@ -89,15 +89,15 @@ class TestParamTypes < MiniTest::Unit::TestCase
 
   def test_hash_array_against_class_param
     # Array does not match single element
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, [{}])
     end
     # Single element doesn't match array
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value([HashClassTest], {})
     end
     # Actually look for type inside array
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value([HashClassTest], [{"There is no goodbye"=>false}])
     end
     assert_equal([{}], check_type_against_value([HashClassTest], [{}]))
@@ -107,13 +107,13 @@ class TestParamTypes < MiniTest::Unit::TestCase
   end
 
   def test_hash_string_against_class_param
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, "[[[badJson*")
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, "not even an attempt")
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value(HashClassTest, [{}].to_json)
     end
 
@@ -122,10 +122,10 @@ class TestParamTypes < MiniTest::Unit::TestCase
   end
 
   def test_hash_array_string_against_class_param
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value([HashClassTest], {}.to_json)
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       check_type_against_value([HashClassTest], [{"There is no goodbye"=>false}].to_json)
     end
     assert_equal([{}].to_json, check_type_against_value([HashClassTest], [{}].to_json))

@@ -11,11 +11,11 @@ module Rack
     end
 
     def guid
-      self.env[ OLFramework::Http::CGI_REQUEST_GUID_HEADER ]
+      self.env[ Olaf::Http::CGI_REQUEST_GUID_HEADER ]
     end
 
     def api_key
-      self.env[ OLFramework::Http::CGI_API_KEY_HEADER ]
+      self.env[ Olaf::Http::CGI_API_KEY_HEADER ]
     end
 
     def tenant_id

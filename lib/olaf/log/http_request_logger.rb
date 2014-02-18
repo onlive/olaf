@@ -2,7 +2,7 @@
 
 require 'rack/commonlogger'
 
-module OLFramework
+module Olaf
 
   # Logger which mimics Rack::CommonLogger but outputs nicely formatted Json
   class HttpRequestLogger < Rack::CommonLogger

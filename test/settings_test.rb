@@ -4,7 +4,7 @@ require 'olaf/settings'
 
 class TestBasicSettings < MiniTest::Unit::TestCase
   def setup
-    @settings = OLFramework::Settings.new
+    @settings = Olaf::Settings.new
   end
 
   def test_read_write_setting
@@ -20,7 +20,7 @@ class TestBasicSettings < MiniTest::Unit::TestCase
 
     assert_equal 7, @settings["jojo"]
 
-    assert_raises OLFramework::SettingNoUpdate do
+    assert_raises Olaf::SettingNoUpdate do
       @settings["jojo"] = 5
     end
   end
@@ -66,7 +66,7 @@ class TestBasicSettings < MiniTest::Unit::TestCase
 
     @settings.unregister "bobo"
 
-    assert_raises OLFramework::SettingNotFound do
+    assert_raises Olaf::SettingNotFound do
       @settings["bobo"]
     end
   end

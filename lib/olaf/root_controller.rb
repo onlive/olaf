@@ -4,7 +4,7 @@
 require "json"
 require "olaf/controller"
 
-module OLFramework
+module Olaf
   class RootController < Controller
     set :public_folder, Proc.new { File.join(settings.frame_root, "public") }
 
@@ -28,7 +28,7 @@ module OLFramework
         "apis" => [],
       }
 
-      OLFramework::resources.each do |name, data|
+      OLaf::resources.each do |name, data|
         next if data[:url]    # Only local
         next if data[:nodoc]  # Only if not marked "nodoc"
         spec["apis"] << {
@@ -43,7 +43,7 @@ module OLFramework
     get "/api-docs.json/:resource" do
       content_type "application/json"
 
-      rsc = OLFramework::resources[params[:resource]]
+      rsc = Olaf::resources[params[:resource]]
       if ENV['AUTO_SWAGGER'] && rsc[:service]
         swagger = rsc[:service].swagger_hash(rsc[:name])
         return JSON.pretty_generate swagger
@@ -55,11 +55,11 @@ module OLFramework
       prefix = params[:resource].split(/-|_/)[0].downcase
       prefix = prefix[0..-2] if prefix[-1] == "s"
 
-      resource = OLFramework::resources[params[:resource]]
+      resource = Olaf::resources[params[:resource]]
       dir = File.join(resource[:root], "api-docs")
       files = Dir["#{dir}/#{prefix}*.json"]
       halt(404) if files.empty?
       File.read(files.first)
     end
   end
-end # OLFramework
+end # Olaf

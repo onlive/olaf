@@ -1,15 +1,15 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
-module OLFramework
+module Olaf
   module ServiceHelpers
     #
-    # This checks values against OLFramework::Service param types.
+    # This checks values against Olaf::Service param types.
     # A param type is normally specified as a hash of property names
     # to types (param types, Ruby types or models).
     #
     # Normally, type would be specified as something like:
     #
     # { :name => String, :num => [Fixnum],
-    #   :id => OLFramework::Required[Fixnum] }
+    #   :id => Olaf::Required[Fixnum] }
     #
     def check_type_against_value(param_type, value, options = {:ignore_unknown_fields => true})
       if value == nil &&
@@ -165,7 +165,7 @@ module OLFramework
     end
 
     def param_type_error(message)
-      raise OLFramework::ParamTypeError.new :message => message
+      raise Olaf::ParamTypeError.new :message => message
     end
   end
 end

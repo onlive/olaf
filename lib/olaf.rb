@@ -3,11 +3,9 @@
 require "bundler"
 Bundler.require(:default)
 
-module OLFramework; end
+module Olaf; end
 
-Olaf = OLFramework
-
-module OLFramework
+module Olaf
   module Thread
     def self.new(*args, &block)
       begin
@@ -114,7 +112,7 @@ module OLFramework
       filename = ENV['OLAF_SETTINGS']
       filename ||= File.join(File.dirname(__FILE__), "..", "settings", "default.json")
 
-      @@settings = OLFramework::Settings.new
+      @@settings = Olaf::Settings.new
       @@settings.register "tweak", :from_file => filename, :read_only => true
     end
     @@settings

@@ -15,8 +15,8 @@ module Sinatra
 end
 
 module OLControllerHelpers
-  #include OLFramework::LoggerHelpers
-  include OLFramework::ServiceHelpers
+  #include Olaf::LoggerHelpers
+  include Olaf::ServiceHelpers
 
   # common helpers here
 
@@ -26,7 +26,7 @@ module OLControllerHelpers
       hash = JSON.parse(request.body.string)
     rescue
       #logger.debug request.body.string
-      raise OLFramework::InvalidJson
+      raise Olaf::InvalidJson
     end
     if convert_to_symbols then
       Hash.convert_keys_to_symbols(hash)
@@ -54,7 +54,7 @@ module OLControllerHelpers
 
   def check_return_type(route_properties, response)
     # if return type is not defined, then bail. route_properties may not always be set in tests.
-    return false if route_properties.nil? || route_properties[:return_type].nil? || response.return_value == OLFramework::ReturnValue::None
+    return false if route_properties.nil? || route_properties[:return_type].nil? || response.return_value == Olaf::ReturnValue::None
 
     # don't fail type-checking if this is an error
     return false unless response.status.between?(200, 299)

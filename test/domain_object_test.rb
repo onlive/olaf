@@ -10,16 +10,16 @@ require 'olaf/extensions/uuid'
 
 class TestDomainObject < MiniTest::Unit::TestCase
 
-  include OLFramework::LoggerHelpers
+  include Olaf::LoggerHelpers
 
-  class TestObject < OLFramework::DomainObject
+  class TestObject < Olaf::DomainObject
     field :id, String, :create => false, :update => false
     field :sausages, Fixnum
     field :bacon, Hash, :update => false
     field :deliciousness, Fixnum, :readonly => true, :private => true
   end
 
-  class NestedTestObject < OLFramework::DomainObject
+  class NestedTestObject < Olaf::DomainObject
     field :bun, String
     field :hotdog, TestObject
   end
@@ -39,14 +39,14 @@ class TestDomainObject < MiniTest::Unit::TestCase
 
   def test_readonly_field
     test_obj = TestObject.new({:id => "123", :sausages => 5, :deliciousness => 11})
-    assert_raises OLFramework::FieldUpdateError do
+    assert_raises Olaf::FieldUpdateError do
       test_obj.deliciousness = 0
     end
   end
 
   def test_invalid_field_option
-    assert_raises OLFramework::InvalidDomainObjectOption do
-      eval('class BadClass < OLFramework::DomainObject; field :bad_field, String, :bad_option => "foo"; end;')
+    assert_raises Olaf::InvalidDomainObjectOption do
+      eval('class BadClass < Olaf::DomainObject; field :bad_field, String, :bad_option => "foo"; end;')
     end
   end
 
@@ -67,19 +67,19 @@ class TestDomainObject < MiniTest::Unit::TestCase
   end
 
   def test_check_hash_fields_type
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestObject.check_hash_against_domain_object({:id=>3}, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestObject.check_hash_against_domain_object({:sausages=>"SomeString"}, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestObject.check_hash_against_domain_object({:bacon=>[]}, {:ignore_unknown_fields => false})
     end
   end
 
   def test_nested_object_type
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       NestedTestObject.check_hash_against_domain_object({:hotdog=>3}, {:ignore_unknown_fields => false})
     end
 
@@ -97,7 +97,7 @@ class TestDomainObject < MiniTest::Unit::TestCase
     nested_object_hash = {:bun=>"abcdef", :hotdog =>
         {:vegan_bacon => {:fried => "yes", :crispy => "yes", :tastes_like_bacon=>false}}}
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       NestedTestObject.check_hash_against_domain_object(nested_object_hash, {:ignore_unknown_fields => false})
     end
 
@@ -106,8 +106,8 @@ class TestDomainObject < MiniTest::Unit::TestCase
         NestedTestObject.check_hash_against_domain_object(nested_object_hash, {:ignore_unknown_fields => true}))
   end
 
-  class TestJsonType < OLFramework::DomainObject
-    field :json_blob, OLFramework::Json
+  class TestJsonType < Olaf::DomainObject
+    field :json_blob, Olaf::Json
   end
 
   def test_json_type
@@ -117,20 +117,20 @@ class TestDomainObject < MiniTest::Unit::TestCase
     assert_equal({:json_blob => {}.to_json},
                  TestJsonType.check_hash_against_domain_object({:json_blob => {}.to_json}, {:ignore_unknown_fields => false}))
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestJsonType.check_hash_against_domain_object({:json_blob => "malformed json"}, {:ignore_unknown_fields => true})
     end
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestJsonType.check_hash_against_domain_object({:json_blob=>[]}, {:ignore_unknown_fields => true})
     end
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestJsonType.check_hash_against_domain_object({:json_blob => "{{{}}".to_json}, {:ignore_unknown_fields => true})
     end
   end
 
-  class TestUUIDType < OLFramework::DomainObject
+  class TestUUIDType < Olaf::DomainObject
     field :uuid_blob, UUIDTools::UUID
   end
 
@@ -143,19 +143,19 @@ class TestDomainObject < MiniTest::Unit::TestCase
     assert_equal({:uuid_blob => test_actual_uuid},
                  TestUUIDType.check_hash_against_domain_object({:uuid_blob => test_actual_uuid}, {:ignore_unknown_fields => false}))
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestUUIDType.check_hash_against_domain_object({:uuid_blob => "e0d87b29"}, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestUUIDType.check_hash_against_domain_object({:uuid_blob => {} }, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestUUIDType.check_hash_against_domain_object({:uuid_blob => ""}, {:ignore_unknown_fields => false})
     end
 
   end
 
-  class TestDateTimeType < OLFramework::DomainObject
+  class TestDateTimeType < Olaf::DomainObject
     field :date, DateTime
   end
 
@@ -168,18 +168,18 @@ class TestDomainObject < MiniTest::Unit::TestCase
     assert_equal({:date => actual_date_time},
                  TestDateTimeType.check_hash_against_domain_object({:date => actual_date_time}, {:ignore_unknown_fields => false}))
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestDateTimeType.check_hash_against_domain_object({:date => "e0d87b29"}, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestDateTimeType.check_hash_against_domain_object({:date => {} }, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestDateTimeType.check_hash_against_domain_object({:date => ""}, {:ignore_unknown_fields => false})
     end
   end
 
-  class TestFixnumType < OLFramework::DomainObject
+  class TestFixnumType < Olaf::DomainObject
     field :number, Fixnum
   end
 
@@ -196,13 +196,13 @@ class TestDomainObject < MiniTest::Unit::TestCase
     assert_equal({:number => actual_date_time},
                  TestFixnumType.check_hash_against_domain_object({:number => actual_date_time}, {:ignore_unknown_fields => false}))
 
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestFixnumType.check_hash_against_domain_object({:number => "hello"}, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestFixnumType.check_hash_against_domain_object({:number => {} }, {:ignore_unknown_fields => false})
     end
-    assert_raises(OLFramework::ParamTypeError) do
+    assert_raises(Olaf::ParamTypeError) do
       TestFixnumType.check_hash_against_domain_object({:number => ""}, {:ignore_unknown_fields => false})
     end
   end
