@@ -2,30 +2,10 @@
   "default_adminport": 44004,
 
   "services": {
-    "OL_URI_CORE_SEGMENT": { "service": "ol_segment", "path": "./ol_segment", "port": 3001 },
-    "OL_URI_CORE_STORAGE": { "service": "ol_storage", "path": "./ol_storage", "port": 3007 },
-
-    "OL_URI_BASE_IDENTITY": { "service": "ol_identity", "path": "./ol_identity", "port": 3009 },
-    "OL_URI_BASE_APP": { "service": "ol_application", "path": "./ol_application", "port": 3004 },
-    "OL_URI_BASE_JOB": { "service": "ol_job", "path": "./ol_job", "port": 3003 },
-    "OL_URI_BASE_DATA": { "service": "ol_data", "path": "./ol_data", "port": 3008 },
-    "OL_URI_BASE_JOB_SCHEDULER": { "service": "ol_job_scheduler", "path": "./ol_job_scheduler", "port": 3006 },
-    "OL_URI_BASE_EDGE_QUEUE": { "service": "ol_edge_queue", "path": "./ol_edge_queue", "port": 3005 },
-
-    "OL_URI_BASE_TENANT": { "service": "ol_tenant", "path": "./tenant", "port": 4000 }
+    "OL_URI_BASE_USER": { "service": "ol_user", "path": "./user", "port": 4000 }
   },
 
   "processes": {
-    "OL_SEGMENT": { "service": "ol_segment", "path": "./ol_segment", "port": 3001 },
-    "OL_STORAGE": { "service": "ol_storage", "path": "./ol_storage", "port": 3007 },
-
-    "OL_IDENTITY": { "service": "ol_identity", "path": "./ol_identity", "port": 3009 },
-    "OL_APP": { "service": "ol_application", "path": "./ol_application", "port": 3004 },
-    "OL_JOB": { "service": "ol_job", "path": "./ol_job", "port": 3003 },
-    "OL_DATA": { "service": "ol_data", "path": "./ol_data", "port": 3008 },
-    "OL_JOB_SCHEDULER": { "service": "ol_job_scheduler", "path": "./ol_job_scheduler", "port": 3006 },
-    "OL_EDGE_QUEUE": { "service": "ol_edge_queue", "path": "./ol_edge_queue", "port": 3005 },
-
-    "OL_TENANT": { "service": "tenant", "path": "./tenant", "port": 4000 }
+    "OL_USER": { "service": "ol_user", "path": "./ol_user", "port": 4000 }
   }
 }
