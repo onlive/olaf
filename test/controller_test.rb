@@ -2,10 +2,10 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'olaf'
 
-# I don't know how to test OLFramework::Controller without running a Rack server
+# I don't know how to test Olaf::Controller without running a Rack server
 # So I'm going to use TestController and URI handlers.
-class TestController < OLFramework::Controller
-  include OLFramework::TestHelpers
+class TestController < Olaf::Controller
+  include Olaf::TestHelpers
 
   get '/test-paging' do
     content_type :json
@@ -37,7 +37,7 @@ class TestController < OLFramework::Controller
   end
 
   get '/throw/FrameworkException' do
-    raise OLFramework::Error.new(:error_code => 1000, :http_response_code => 500, :request_guid => "7d6b0dd4-a83f-11e2-a237-000a27020050"), "Test Passed"
+    raise Olaf::Error.new(:error_code => 1000, :http_response_code => 500, :request_guid => "7d6b0dd4-a83f-11e2-a237-000a27020050"), "Test Passed"
   end
 
   get '/throw/UnknownException' do

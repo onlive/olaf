@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 
-module OLFramework
+module Olaf
 
   # Include to get per-instance logger
   module InstanceLogger

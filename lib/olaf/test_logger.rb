@@ -1,7 +1,7 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 require 'logger'
 
-module OLFramework
+module Olaf
   class TestLogger
     def initialize(app, level = ::Logger::INFO)
       @app, @level = app, level

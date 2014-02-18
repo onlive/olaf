@@ -4,7 +4,7 @@ require "olaf/extensions/hash"
 
 require "cassandra"
 
-module OLFramework
+module Olaf
   Consistency = ::CassandraThrift::ConsistencyLevel
 
   module Cassandra
@@ -183,8 +183,8 @@ module OLFramework
   #Example usage:
   #
   # class MyRecord
-  #   include OLFramework::PersistentResource
-  #   include OLFramework::StandardProperties
+  #   include Olaf::PersistentResource
+  #   include Olaf::StandardProperties
   # end
   #
   module StandardProperties

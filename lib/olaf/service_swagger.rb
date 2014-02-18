@@ -1,6 +1,6 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 
-module OLFramework
+module Olaf
   module ServiceSwagger
     # snake_case and camel_case implementations stolen from extlib 0.9.15
     def camel_case(s)
@@ -165,7 +165,7 @@ module OLFramework
       # TODO: const_get for stringified class names
 
       if olaf_type_spec.is_a?(Class) &&
-          olaf_type_spec.ancestors.include?(OLFramework::DomainObject)
+          olaf_type_spec.ancestors.include?(Olaf::DomainObject)
         swagger_name = olaf_type_spec.name.split("::")[-1]
 
         @models[type_key] = { :type => olaf_type_spec, :swagger => swagger_name,

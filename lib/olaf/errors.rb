@@ -3,7 +3,7 @@
 require 'multi_json'
 require "olaf/extensions/exception"
 
-module OLFramework
+module Olaf
   ERROR_CODE_BASE = 1000
 
   # Default framework exception
@@ -13,11 +13,11 @@ module OLFramework
     def initialize(options)
       bad_keys = options.keys - OLERROR_OPTIONS
 
-      STDERR.puts "OLFrameworkError: Creating with bad options: #{bad_keys.inspect}" if bad_keys.length > 0
-      STDERR.puts "OLFrameworkError: You MUST provide error_code" if options[:error_code].nil?
+      STDERR.puts "OlafError: Creating with bad options: #{bad_keys.inspect}" if bad_keys.length > 0
+      STDERR.puts "OlafError: You MUST provide error_code" if options[:error_code].nil?
       # Commenting out this error message because the request_guid gets added to the exception in the
       # controller error block
-      #STDERR.puts "OLFrameworkError: You MUST provide request_guid" if options[:request_guid].nil?
+      #STDERR.puts "OLafError: You MUST provide request_guid" if options[:request_guid].nil?
 
       super(options[:message] || "#{self.class}: error_code #{options[:error_code]}, http_status #{options[:http_response_code]}")
 
@@ -63,7 +63,7 @@ module OLFramework
       bt.compact
     end
 
-    # Creates a new subclass of OLFrameworkError with
+    # Creates a new subclass of OlafError with
     # error code and response code
     # @param [Fixnum] error_code Error code
     # @param [Fixnum] response_code HTTP response code

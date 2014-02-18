@@ -1,7 +1,7 @@
 # Copyright (C) 2013-2014 OL2, Inc.  See LICENSE.txt for details.
 require 'logger'
 
-module OLFramework
+module Olaf
   # Super-verbose logger which logs the entire request (query, headers, return body, etc)
   class FullRequestLogger
     def initialize(app, max_len = 512)

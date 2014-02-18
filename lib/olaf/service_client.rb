@@ -10,7 +10,7 @@ require 'rack/commonlogger'
 require 'uri'
 require 'ostruct'
 
-module OLFramework
+module Olaf
 
   # CommonLogger for local service calls
   class LocalCommonLogger < Rack::CommonLogger
@@ -26,7 +26,7 @@ module OLFramework
 
   # Service client
   class ServiceClient
-    include OLFramework::LoggerHelpers
+    include Olaf::LoggerHelpers
 
     attr_reader :service_name, :url
 
@@ -58,7 +58,7 @@ module OLFramework
       # if any.  If anything matches, that was it.
 
       service_names = [ @service_name.downcase, @service_name.downcase + "s" ]
-      OLFramework.resources.each do |name, resource|
+      Olaf.resources.each do |name, resource|
         rsc_svc = resource[:service] ? resource[:service].name : nil
         rsc_name = rsc_svc ? rsc_svc[0..-8] : ""
         if service_names.include?(name.downcase) ||
@@ -147,7 +147,7 @@ module OLFramework
       if context[:raise] && got_error
         error_hash = JSON.parse(body) rescue {}
         # Note: we don't set reason field because we try to rethrow the original exception here
-        raise OLFramework::Error.new  :http_response_code => request_result[:status],
+        raise Olaf::Error.new  :http_response_code => request_result[:status],
           :error_code => error_hash.fetch('error_code', 1000),
           :request_guid => headers[Http::REQUEST_GUID_HEADER],
           :message => "ServiceClient request failed: #{verb} #{path} message #{error_hash.fetch('message', 'unknown')}"
@@ -174,7 +174,7 @@ module OLFramework
 
     def local_request(verb, path, params, context, headers)
       # Grab the current Rack request environment and modify it
-      env = OLFramework.last_request || {}
+      env = Olaf.last_request || {}
       env = new_env_for_request(env, verb, path, params, headers)
 
       unless @service
@@ -253,7 +253,7 @@ module OLFramework
       end
 
       # Request GUID
-      cur_env = OLFramework.last_request || {}
+      cur_env = Olaf.last_request || {}
       guid = cur_env[Http::CGI_REQUEST_GUID_HEADER]
       guid ||= UUIDTools::UUID.random_create.to_s
       headers[Http::REQUEST_GUID_HEADER] = guid

@@ -6,7 +6,7 @@ require 'olaf'
 require 'olaf/service'
 require 'olaf/domain_object'
 
-class TestObject < OLFramework::DomainObject
+class TestObject < Olaf::DomainObject
   def self.print_name(obj)
     puts "Hi my name is #{obj.name}"
   end
@@ -16,7 +16,7 @@ class TestObject < OLFramework::DomainObject
   field :description, String
 end
 
-class TestService < OLFramework::Service
+class TestService < Olaf::Service
   service_name "TestService"
 
   route_name :create_test_object

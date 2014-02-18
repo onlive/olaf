@@ -3,7 +3,7 @@
 require 'olaf/errors'
 require 'olaf/service_helpers'
 
-module OLFramework
+module Olaf
   class Json
     def self.type_check_against_ol_value(value)
       if value.is_a?(Hash)
@@ -14,10 +14,10 @@ module OLFramework
         begin
           JSON.parse(value)
         rescue => e
-          raise OLFramework::ParamTypeError.new(:message=>"#{value} is not valid Json.")
+          raise Olaf::ParamTypeError.new(:message=>"#{value} is not valid Json.")
         end
       else
-        raise OLFramework::ParamTypeError.new(:message=>"#{value} cannot be Json because it is not a string.")
+        raise Olaf::ParamTypeError.new(:message=>"#{value} cannot be Json because it is not a string.")
       end
 
       return value
@@ -32,10 +32,10 @@ class UUID
       begin
         UUIDTools::UUID.parse(value)
       rescue => e
-        raise OLFramework::ParamTypeError.new(:message=>"#{value} is not a valid UUID.")
+        raise Olaf::ParamTypeError.new(:message=>"#{value} is not a valid UUID.")
       end
     else
-      raise OLFramework::ParamTypeError.new(:message=>"#{value.class} cannot be a UUID because it is not a string.")
+      raise Olaf::ParamTypeError.new(:message=>"#{value.class} cannot be a UUID because it is not a string.")
     end
 
     return value
@@ -49,10 +49,10 @@ class DateTime
       begin
         DateTime.parse(value)
       rescue => e
-        raise OLFramework::ParamTypeError.new(:message=>"#{value} is not a valid DateTime.")
+        raise Olaf::ParamTypeError.new(:message=>"#{value} is not a valid DateTime.")
       end
     else
-      raise OLFramework::ParamTypeError.new(:message=>"#{value.class} cannot be a DateTime because it is not a string.")
+      raise Olaf::ParamTypeError.new(:message=>"#{value.class} cannot be a DateTime because it is not a string.")
     end
 
     return value
@@ -64,7 +64,7 @@ end
 class Symbol
   def self.type_check_against_ol_value(value)
     if !value.is_a?(String)
-      raise OLFramework::ParamTypeError.new(:message=>"#{value.class} cannot be a Symbol because it is not a string.")
+      raise Olaf::ParamTypeError.new(:message=>"#{value.class} cannot be a Symbol because it is not a string.")
     end
     return value
   end
@@ -74,9 +74,9 @@ end
 class Fixnum
   def self.type_check_against_ol_value(value)
     if value.is_a?(String)
-      raise OLFramework::ParamTypeError.new(:message=>"#{value} is not a valid Fixnum.") if value.to_i == 0 and value != "0"
+      raise Olaf::ParamTypeError.new(:message=>"#{value} is not a valid Fixnum.") if value.to_i == 0 and value != "0"
     else
-      raise OLFramework::ParamTypeError.new(:message=>"#{value.class} cannot be a Fixnum because it is not a string.")
+      raise Olaf::ParamTypeError.new(:message=>"#{value.class} cannot be a Fixnum because it is not a string.")
     end
 
     return value

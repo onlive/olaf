@@ -14,7 +14,7 @@ require "olaf/request_guid_generator"
 require "olaf/errors"
 require "olaf/extensions/sinatra_response"
 
-module OLFramework
+module Olaf
   # Common controller class that every controller should inherit from.
   class Controller < Sinatra::Base
     helpers OLControllerHelpers
@@ -36,7 +36,7 @@ module OLFramework
 
       logger.info("Caught ArgumentError: #{exception.message}")
       status 400
-      body OLFramework::OLArgumentError.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
+      body Olaf::OLArgumentError.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
     end
 
     error DataMapper::ObjectNotFoundError do
@@ -44,14 +44,14 @@ module OLFramework
 
       logger.info("Caught #{exception.class}: #{exception.message}")
       status 404
-      body OLFramework::ObjectNotFound.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
+      body Olaf::ObjectNotFound.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
     end
 
-    error OLFramework::Error do
+    error Olaf::Error do
       exception = request.env["sinatra.error"]
       # Make sure we don't overwrite the guid in case it was set somewhere else (should always be the same but just in case)
       exception.request_guid = request.guid unless exception.request_guid
-      STDERR.puts "OLFrameworkError: No request_guid for exception" unless exception.request_guid
+      STDERR.puts "OLafError: No request_guid for exception" unless exception.request_guid
       logger.info("Caught #{exception.class}: #{exception.message}")
       status exception.http_status
       body exception.to_ol_hash.to_json
@@ -62,18 +62,18 @@ module OLFramework
 
       logger.info("Caught #{exception.class}: #{exception.message}")
       status exception.http_code
-      body OLFramework::GenericRestClientError.new(:http_response_code => exception.http_code, :message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
+      body Olaf::GenericRestClientError.new(:http_response_code => exception.http_code, :message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
     end
 
     error do
       exception = request.env["sinatra.error"]
-      logger.info "OLFramework::Controller.error: #{exception.class}"
+      logger.info "Olaf::Controller.error: #{exception.class}"
 
       msg = ["Caught #{exception.class} - #{exception.message}:"]
       msg.concat(exception.backtrace)
       logger.info msg.join("\n")
       status 500
-      body OLFramework::UnknownError.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
+      body Olaf::UnknownError.new(:message => exception.message, :reason => exception, :request_guid => request.guid).to_ol_hash.to_json
     end
 
     configure do
@@ -90,11 +90,11 @@ module OLFramework
 
       # ======= Rack Middleware ================================
 
-      use OLFramework::RequestGuidGenerator
+      use Olaf::RequestGuidGenerator
 
       if ENV['DUMP_REQUESTS']
         STDERR.puts "Enabling full request logger"
-        use OLFramework::FullRequestLogger
+        use Olaf::FullRequestLogger
       end
 
       # Auto-parse application/json bodies into request.params
@@ -129,7 +129,7 @@ module OLFramework
         # By default, sinatra sets up Rack::Logger which uses env[rack.errors], which
         # in turn is overwritten in MockRequest. We want to see logs in the test environment
         if settings.environment == :test
-          builder.use OLFramework::TestLogger, Logger::DEBUG
+          builder.use Olaf::TestLogger, Logger::DEBUG
         else
           #STDERR.puts "#{self.inspect}: Setting up Rack::Logger"
           if logging.respond_to? :to_int
@@ -153,7 +153,7 @@ module OLFramework
       logger.debug "sinatra_before in #{self.class.name}" if settings.log_before_after
 
       # Copy settings from global
-      self.class.olaf_settings = OLFramework.settings_for_request
+      self.class.olaf_settings = Olaf.settings_for_request
 
       cache_control :no_cache
 

@@ -3,7 +3,7 @@ require 'olaf/extensions/uuid'
 require 'olaf/http'
 
 
-module OLFramework
+module Olaf
   class RequestGuidGenerator
 
     def initialize(app)
@@ -11,8 +11,8 @@ module OLFramework
     end
 
     def call(env)
-      if env[ OLFramework::Http::CGI_REQUEST_GUID_HEADER ].nil?
-        env[ OLFramework::Http::CGI_REQUEST_GUID_HEADER ] = UUIDTools::UUID.random_create.to_s
+      if env[ Olaf::Http::CGI_REQUEST_GUID_HEADER ].nil?
+        env[ Olaf::Http::CGI_REQUEST_GUID_HEADER ] = UUIDTools::UUID.random_create.to_s
       end
       @app.call(env)
     end

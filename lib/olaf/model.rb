@@ -8,7 +8,7 @@ require "dm-types"
 require "dm-validations"
 require "olaf/extensions/uuid"
 
-module OLFramework
+module Olaf
 
   PersistentResource = DataMapper::Resource
 
@@ -18,8 +18,8 @@ module OLFramework
   #Example usage:
   #
   # class MyRecord
-  #   include OLFramework::PersistentResource
-  #   include OLFramework::StandardProperties
+  #   include Olaf::PersistentResource
+  #   include Olaf::StandardProperties
   # end
   #
   module StandardProperties
@@ -57,7 +57,7 @@ require "uri"
 require "active_record"
 
 # ActiveRecord additions:
-module OLFramework
+module Olaf
   module Type
     COMMA_SEPARATED = /\A\w+((?:,\w+)*)\Z/
     URI = ::URI.regexp

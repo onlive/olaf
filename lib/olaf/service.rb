@@ -9,9 +9,9 @@ require "olaf/controller"
 require 'olaf/domain_object'
 require 'olaf/log/inherited_class_logger'
 
-module OLFramework
+module Olaf
   class Service
-    include OLFramework::InheritedClassLogger
+    include Olaf::InheritedClassLogger
 
     include ServiceHelpers
     extend ServiceSwagger
@@ -47,7 +47,7 @@ MSG
     def self.do_setup
       @name = self.name
       eval <<CODE
-        class ::#{@name}Sinatra < OLFramework::Controller
+        class ::#{@name}Sinatra < Olaf::Controller
         end
 CODE
       @internal_sinatra = multi_const_get(@name + "Sinatra")
@@ -139,7 +139,7 @@ CODE
     HTTP_VERBS = [:get, :put, :post, :head, :patch, :delete]
 
     # Define a convenience method for each HTTP verb
-    metaclass = class << OLFramework::Service; self; end
+    metaclass = class << Olaf::Service; self; end
     HTTP_VERBS.each do |verb|
       metaclass.class_eval do
         define_method(verb) do |path, options = {}, &action|
@@ -190,14 +190,14 @@ CODE
 
         logger.debug "sinatra_before #{path} in #{self.class.name}" if settings.log_before_after
 
-        OLFramework.current_request_stack ||= []
-        OLFramework.current_request_stack.push request.env
+        Olaf.current_request_stack ||= []
+        Olaf.current_request_stack.push request.env
 
         # Validate parameters
         #STDERR.puts "(FAKE) Validating params for #{path.inspect}..."
 
         if properties.has_key?(:param)
-          new_params = OLFramework::Service.transform_parameters(properties, request, @params)
+          new_params = Olaf::Service.transform_parameters(properties, request, @params)
           unless new_params == @params
             @params = indifferent_params(new_params)
           end
@@ -216,7 +216,7 @@ CODE
           body(response.return_value.to_json)
         end
 
-        req_stack = OLFramework.current_request_stack
+        req_stack = Olaf.current_request_stack
         if req_stack[-1] == request.env
           req_stack.pop
           return
@@ -258,7 +258,7 @@ CODE
           # If the body param is a domain object, internalize it and set it in the params instead
           # of the hash
           param_class = val[:type]
-          if param_class < OLFramework::DomainObject
+          if param_class < Olaf::DomainObject
             request[:orig_body] = new_body
             # to_internal_hash will strip unknown fields and return nil if it encounters any bad fields
             obj = param_class.from_external_hash(new_body)

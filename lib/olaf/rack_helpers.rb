@@ -8,7 +8,7 @@ require "mysql2"
 require "yaml"
 
 
-module OLFramework
+module Olaf
   module RackHelpers
     def self.setup   (config = {})  # e.g. {:db=>"mysql", :orm=>'ar'}
       # Make sure datamapper and/or activerecord only get set up once
@@ -19,10 +19,10 @@ module OLFramework
 
         if config[:orm] == "ar"
           # set up both for now
-          OLFramework::RackHelpers::setup_activerecord(config)
-          OLFramework::RackHelpers::setup_datamapper(config)
+          Olaf::RackHelpers::setup_activerecord(config)
+          Olaf::RackHelpers::setup_datamapper(config)
         else
-          OLFramework::RackHelpers::setup_datamapper(config)
+          Olaf::RackHelpers::setup_datamapper(config)
         end
         @olf_orm_initialized = true
       else
@@ -32,9 +32,9 @@ module OLFramework
 
     def self.app
       url_map = {
-        "/" => OLFramework::RootController
+        "/" => Olaf::RootController
       }
-      OLFramework::resources.each do |name, data|
+      Olaf::resources.each do |name, data|
         next if data[:url]  # Only local
         if data[:controller]
           url_map["/#{name}"] = data[:controller]
@@ -100,4 +100,4 @@ module OLFramework
     end
 
   end # RackHelpers
-end # OLFramework
+end # Olaf

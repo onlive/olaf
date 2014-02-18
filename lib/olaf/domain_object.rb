@@ -7,7 +7,7 @@ require 'olaf/domain_object_types'
 require 'olaf/extensions/hash'
 require 'olaf/extensions/uuid'
 
-module OLFramework
+module Olaf
   module StandardFields
     def self.included(other)
       other.class_eval do
@@ -19,8 +19,8 @@ module OLFramework
   end
 
   class DomainObject
-    extend OLFramework::ServiceHelpers
-    include OLFramework::LoggerHelpers
+    extend Olaf::ServiceHelpers
+    include Olaf::LoggerHelpers
 
     VALID_OPTIONS = [:create, :update, :readonly, :private]
 
@@ -56,7 +56,7 @@ module OLFramework
       # Define setter
       define_method("#{name}=") do |val|
         # TODO this might need to be smarter re: admin rights, etc.
-        raise OLFramework::FieldUpdateError, {:message => "Field '#{name}' cannot be updated."} if self.class.options[name.to_sym].fetch(:readonly, false)
+        raise Olaf::FieldUpdateError, {:message => "Field '#{name}' cannot be updated."} if self.class.options[name.to_sym].fetch(:readonly, false)
         # Should we type check here?
         @hash[name.to_sym] = val
       end
@@ -65,7 +65,7 @@ module OLFramework
       @types[name.to_s] = type
       bad_options = options.keys - VALID_OPTIONS
       bad_options.each do |option|
-        raise OLFramework::InvalidDomainObjectOption.new("Unknown option '#{option}' in field '#{name}' of class #{self}")
+        raise Olaf::InvalidDomainObjectOption.new("Unknown option '#{option}' in field '#{name}' of class #{self}")
       end
       @options[name.to_sym] = options.reject {  }
     end

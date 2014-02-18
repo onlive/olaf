@@ -2,7 +2,7 @@
 
 require 'logger'
 
-module OLFramework
+module Olaf
 
   # Declare per-class logger in this class and all inherited classes
   module InheritedClassLogger
