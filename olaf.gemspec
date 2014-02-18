@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "dm-types"
   s.add_runtime_dependency "dm-validations"
   s.add_runtime_dependency "mysql2"
-  s.add_runtime_dependency "cassandra"
 
   # ActiveRecord
   s.add_runtime_dependency "activerecord", "~>3.2.0"
