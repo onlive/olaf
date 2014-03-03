@@ -3,7 +3,7 @@ development:
   adapter: 'mysql2'
   database: 'test-mysql2_development'
   username: 'root'
-  password:  'wrux9bax'
+  password:  'test'
   host: 'localhost'
 
 # Warning: The database defined as "test" will be erased and
@@ -13,12 +13,12 @@ test:
   adapter: 'mysql2'
   database: 'test-mysql2_test'
   username: 'root'
-  password:  'wrux9bax'
+  password:  'test'
   host: 'localhost'
 
 production:
   adapter: 'mysql2'
   database: 'test-mysql2_production'
   username: 'root'
-  password:  'wrux9bax'
+  password:  'test'
   host: 'localhost'

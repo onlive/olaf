@@ -26,9 +26,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "dm-validations"
   s.add_runtime_dependency "mysql2"
 
-  # ActiveRecord
-  s.add_runtime_dependency "activerecord", "~>3.2.0"
-
   # Sinatra & related
   s.add_runtime_dependency "rack"
   s.add_runtime_dependency "rack-multipart_related"

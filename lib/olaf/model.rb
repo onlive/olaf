@@ -54,7 +54,6 @@ module Olaf
 end
 
 require "uri"
-require "active_record"
 
 # ActiveRecord additions:
 module Olaf
@@ -87,16 +86,3 @@ module Olaf
   end
 end
 
-
-#Defining a new validator:
-#http://guides.rubyonrails.org/active_record_validations_callbacks.html#custom-methods
-
-ActiveRecord::Base.class_eval do
-  def self.validates_as_json(attr_name, options = {})
-    validates_each attr_name do |record, attr, value|
-      unless JSON.load(value)
-        record.errors[attr] << options[:message] || "is not valid JSON"
-      end
-    end
-  end
-end
